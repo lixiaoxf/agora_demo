@@ -1,0 +1,34 @@
+{
+  "name": "agora_qietv_demo",
+  "version": "1.0.0",
+  "description": "声网调研",
+  "main": "webpack.config.js",
+  "scripts": {
+    "start": "webpack-dev-server --open",
+    "watch": "webpack --watch"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@babel/core": "^7.4.5",
+    "agora-rtc-sdk": "^2.6.1",
+    "autoprefixer": "^9.5.1",
+    "babel": "^6.23.0",
+    "babel-loader": "^8.0.6",
+    "clean-webpack-plugin": "^1.0.1",
+    "css-loader": "^2.1.1",
+    "extract-text-webpack-plugin": "^4.0.0-beta.0",
+    "html-webpack-plugin": "^3.2.0",
+    "jquery": "^3.4.1",
+    "node-sass": "^4.12.0",
+    "postcss-loader": "^3.0.0",
+    "sass": "^1.20.3",
+    "sass-loader": "^7.1.0",
+    "style-loader": "^0.23.1",
+    "webpack": "^4.32.2"
+  },
+  "devDependencies": {
+    "webpack-cli": "^3.3.2",
+    "webpack-dev-server": "^3.5.1"
+  }
+}
