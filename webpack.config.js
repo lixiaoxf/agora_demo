@@ -124,6 +124,8 @@ module.exports = {
   ],
   devtool: 'inline-source-map',
   devServer: {
+    host: '172.17.3.159',
+    https:true,
     contentBase: path.join(basePath, 'dist'),
     compress: true,
     port: 9000
