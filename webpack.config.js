@@ -2,13 +2,27 @@ const path = require('path');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin')
+const webpack = require("webpack");
 const basePath = __dirname;
 const srcPath = path.resolve(basePath,'src/')
+const os = require('os');
+function getIPAdress() {
+    var interfaces = os.networkInterfaces();
+    for (var devName in interfaces) {
+        var iface = interfaces[devName];
+        for (var i = 0; i < iface.length; i++) {
+            var alias = iface[i];
+            if (alias.family === 'IPv4' && alias.address !== '127.0.0.1' && !alias.internal) {
+                return alias.address;
+            }
+        }
+    }
+}
 module.exports = {
   mode: 'development',
 
   entry: {
-      'live':path.resolve(basePath, 'src/live/index.js')
+      'square':path.resolve(basePath, 'src/square/index.js'),
   },
   output: {
     filename: '[name].[chunkhash:7].js',
@@ -17,7 +31,7 @@ module.exports = {
   resolve:{
     alias:{
         '@':srcPath,
-        // 'rem':path.resolve(staticPath, 'common/js/flexible/rem.js'),
+        rtm: path.resolve(srcPath, "lib/agoraRTM/rtm.js"),
     },
     extensions:[
         '.js',
@@ -52,6 +66,10 @@ module.exports = {
   },
   module:{
     rules:[
+        {
+            test: require.resolve(path.resolve(srcPath, "lib/agoraRTM/rtm.js")),
+            loader: 'exports-loader?window.AgoraRTM!script-loader'
+        },
         {
             test: /\.css$/,
             use: ['style-loader','css-loader']
@@ -110,13 +128,15 @@ module.exports = {
         verbose: true, 
         dry: false,
     }),
+   
     new ExtractTextPlugin({
         filename:'[name].[chunkhash:7].css'
     }),
-    
+
     new HtmlWebpackPlugin({
-        template:path.resolve(basePath, 'src/live/index.html'),
-        chunks:['live','common/vendors','common/default'],
+        template:path.resolve(basePath, 'src/square/index.html'),
+        filename: 'square.html',
+        chunks:['common/vendors','common/default','square',],
         minify:{
             collapseWhitespace:true
         }
@@ -124,7 +144,8 @@ module.exports = {
   ],
   devtool: 'inline-source-map',
   devServer: {
-    host: '172.17.3.159',
+    host: getIPAdress(),
+    openPage: 'square.html',
     https:true,
     contentBase: path.join(basePath, 'dist'),
     compress: true,
